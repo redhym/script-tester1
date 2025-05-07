@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Google Apps Script</title>
+</head>
+<body>
+  <h2>Test Google Apps Script Web App</h2>
+  <p>Click a button to send test data to your script.</p>
+  <button onclick="sendOrder()">Send Test Order</button>
+  <button onclick="sendCustomer()">Send Test Customer</button>
+  <pre id="output"></pre>
+
+  <script>
+    const url = "https://script.google.com/macros/s/AKfycby2luAWDUOZQHStqevMsYGdwLHuuTgraDH0wYTBWmk0NXwVoN8e39uJsWaUJkZP_do/exec";
+
+    function sendOrder() {
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "placeOrder",
+          name: "Test User",
+          product: "9kg Gas",
+          quantity: "2",
+          address: "123 Test Street"
+        })
+      }).then(res => res.text()).then(showResponse).catch(showError);
+    }
+
+    function sendCustomer() {
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "addCustomer",
+          name: "Jane Smith",
+          phone: "0211234567",
+          email: "jane@example.com"
+        })
+      }).then(res => res.text()).then(showResponse).catch(showError);
+    }
+
+    function showResponse(text) {
+      document.getElementById("output").innerText = "✅ Response from server:\n" + text;
+    }
+
+    function showError(err) {
+      document.getElementById("output").innerText = "❌ Error:\n" + err.message;
+    }
+  </script>
+</body>
+</html>
